@@ -9,6 +9,7 @@ QT       += core gui network
 TARGET = ECU-RS-PC
 TEMPLATE = app
 
+DESTDIR = $$PWD/Target/XP
 
 SOURCES += main.cpp\
         mainwindow.cpp \

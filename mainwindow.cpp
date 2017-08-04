@@ -258,15 +258,13 @@ void MainWindow::on_btn_getSystem_clicked()
     char Sendbuff[200] = "APS11000002%sEND";
     char Recvbuff[4096] = {'\0'};
     int optcount = 0;
-    int deviceType = 0,length = 0,index = 0;
+    int length = 0,index = 0;
     memset(Recvbuff,0x00,200);
     sprintf(Sendbuff,"APS11002602%sEND",ECUID);
     qDebug("send:%s\n",Sendbuff);
     flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,2000);
     OPT700_RSList.clear();
-    /*
 
-    */
     if(flag == true)
     {
         if(!memcmp(&Recvbuff[9],"12",2))
@@ -339,6 +337,10 @@ void MainWindow::on_btn_getSystem_clicked()
                     }
                     statusBar()->showMessage(tr("Get System Info Success ..."), 2000);
                     addTableData(ui->tableWidget,OPT700_RSList);
+                    QList<OPT700_RS *>::Iterator iter = OPT700_RSList.begin();
+                    for ( ; iter != OPT700_RSList.end(); iter++)  {
+                        delete (*iter);
+                    }
                 }
             }
         }
