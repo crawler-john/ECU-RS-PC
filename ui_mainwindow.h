@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Fri Aug 4 22:48:09 2017
+** Created: Fri Aug 4 23:07:14 2017
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -21,7 +21,6 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMainWindow>
-#include <QtGui/QMenuBar>
 #include <QtGui/QPlainTextEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QStatusBar>
@@ -80,7 +79,12 @@ public:
     QGroupBox *groupBox_5;
     QPushButton *btn_getSystem;
     QTableWidget *tableWidget;
-    QMenuBar *menuBar;
+    QLabel *label_14;
+    QLabel *label_all;
+    QLabel *label_open;
+    QLabel *label_17;
+    QLabel *label_close;
+    QLabel *label_19;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -354,12 +358,29 @@ public:
         tableWidget->setHorizontalHeaderItem(13, __qtablewidgetitem13);
         tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
         tableWidget->setGeometry(QRect(5, 41, 761, 371));
+        label_14 = new QLabel(groupBox_5);
+        label_14->setObjectName(QString::fromUtf8("label_14"));
+        label_14->setGeometry(QRect(220, 13, 54, 20));
+        label_all = new QLabel(groupBox_5);
+        label_all->setObjectName(QString::fromUtf8("label_all"));
+        label_all->setGeometry(QRect(270, 13, 54, 20));
+        label_all->setStyleSheet(QString::fromUtf8("color:#ff0000"));
+        label_open = new QLabel(groupBox_5);
+        label_open->setObjectName(QString::fromUtf8("label_open"));
+        label_open->setGeometry(QRect(400, 13, 54, 20));
+        label_open->setStyleSheet(QString::fromUtf8("color:#ff0000"));
+        label_17 = new QLabel(groupBox_5);
+        label_17->setObjectName(QString::fromUtf8("label_17"));
+        label_17->setGeometry(QRect(340, 13, 54, 20));
+        label_close = new QLabel(groupBox_5);
+        label_close->setObjectName(QString::fromUtf8("label_close"));
+        label_close->setGeometry(QRect(530, 13, 54, 20));
+        label_close->setStyleSheet(QString::fromUtf8("color:#ff0000"));
+        label_19 = new QLabel(groupBox_5);
+        label_19->setObjectName(QString::fromUtf8("label_19"));
+        label_19->setGeometry(QRect(470, 13, 54, 20));
         tabWidget->addTab(tab_2, QString());
         MainWindow->setCentralWidget(centralWidget);
-        menuBar = new QMenuBar(MainWindow);
-        menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 803, 23));
-        MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
         MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
@@ -459,6 +480,12 @@ public:
         ___qtablewidgetitem12->setText(QApplication::translate("MainWindow", "PV1\350\276\223\345\205\245\345\212\237\347\216\207", 0, QApplication::UnicodeUTF8));
         QTableWidgetItem *___qtablewidgetitem13 = tableWidget->horizontalHeaderItem(13);
         ___qtablewidgetitem13->setText(QApplication::translate("MainWindow", "PV2\350\276\223\345\205\245\345\212\237\347\216\207", 0, QApplication::UnicodeUTF8));
+        label_14->setText(QApplication::translate("MainWindow", "\346\200\273\345\217\260\346\225\260\357\274\232", 0, QApplication::UnicodeUTF8));
+        label_all->setText(QString());
+        label_open->setText(QString());
+        label_17->setText(QApplication::translate("MainWindow", "\345\274\200\346\234\272\345\217\260\346\225\260\357\274\232", 0, QApplication::UnicodeUTF8));
+        label_close->setText(QString());
+        label_19->setText(QApplication::translate("MainWindow", "\345\205\263\346\234\272\345\217\260\346\225\260\357\274\232", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "\347\263\273\347\273\237\344\277\241\346\201\257", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 

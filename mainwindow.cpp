@@ -257,7 +257,7 @@ void MainWindow::on_btn_getSystem_clicked()
     bool flag = false;
     char Sendbuff[200] = "APS11000002%sEND";
     char Recvbuff[4096] = {'\0'};
-    int optcount = 0;
+    int optcount = 0,openCount = 0,closeCount = 0;
     int length = 0,index = 0;
     memset(Recvbuff,0x00,200);
     sprintf(Sendbuff,"APS11002602%sEND",ECUID);
@@ -334,9 +334,21 @@ void MainWindow::on_btn_getSystem_clicked()
 
                             length += 22;
                         }
+
+                        if(opt700_rs->Mos_Status == 1)
+                        {
+                            openCount++;
+                        }else
+                        {
+                            closeCount++;
+                        }
                     }
 
+
                     statusBar()->showMessage(tr("Get System Info Success ..."), 2000);
+                    ui->label_all->setText(QString::number(optcount));
+                    ui->label_open->setText(QString::number(openCount));
+                    ui->label_close->setText(QString::number(closeCount));
                     addTableData(ui->tableWidget,OPT700_RSList);
                     QList<OPT700_RS *>::Iterator iter = OPT700_RSList.begin();
                     for ( ; iter != OPT700_RSList.end(); iter++)  {

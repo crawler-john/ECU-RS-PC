@@ -691,19 +691,96 @@ font: 75 14pt &quot;Agency FB&quot;;
         </property>
        </column>
       </widget>
+      <widget class="QLabel" name="label_14">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>13</y>
+         <width>54</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>总台数：</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_all">
+       <property name="geometry">
+        <rect>
+         <x>270</x>
+         <y>13</y>
+         <width>54</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:#ff0000</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_open">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>13</y>
+         <width>54</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:#ff0000</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_17">
+       <property name="geometry">
+        <rect>
+         <x>340</x>
+         <y>13</y>
+         <width>54</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>开机台数：</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_close">
+       <property name="geometry">
+        <rect>
+         <x>530</x>
+         <y>13</y>
+         <width>54</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:#ff0000</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_19">
+       <property name="geometry">
+        <rect>
+         <x>470</x>
+         <y>13</y>
+         <width>54</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>关机台数：</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>803</width>
-     <height>23</height>
-    </rect>
-   </property>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
