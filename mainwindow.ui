@@ -505,9 +505,9 @@ font: 75 14pt &quot;Agency FB&quot;;
       <widget class="QPushButton" name="btn_addID">
        <property name="geometry">
         <rect>
-         <x>14</x>
+         <x>10</x>
          <y>80</y>
-         <width>61</width>
+         <width>71</width>
          <height>23</height>
         </rect>
        </property>
@@ -565,6 +565,19 @@ font: 75 14pt &quot;Agency FB&quot;;
        </property>
        <property name="text">
         <string>需要注册的ID列表</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_ECUImport">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>140</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>ECU导入ID</string>
        </property>
       </widget>
      </widget>

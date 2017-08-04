@@ -335,6 +335,7 @@ void MainWindow::on_btn_getSystem_clicked()
                             length += 22;
                         }
                     }
+
                     statusBar()->showMessage(tr("Get System Info Success ..."), 2000);
                     addTableData(ui->tableWidget,OPT700_RSList);
                     QList<OPT700_RS *>::Iterator iter = OPT700_RSList.begin();
@@ -350,7 +351,6 @@ void MainWindow::on_btn_getSystem_clicked()
         ui->tableWidget->setRowCount(0);
         //清空Table中内容
         ui->tableWidget->clearContents();
-
         statusBar()->showMessage(tr("Please verify WIFI Connect ..."), 2000);
     }
 }
@@ -450,5 +450,65 @@ void MainWindow::addTableData(QTableWidget *table, QList<OPT700_RS *> &List)
         table->setItem(row_count, 12, item12);
         table->setItem(row_count, 13, item13);
 
+    }
+}
+
+void MainWindow::on_btn_ECUImport_clicked()
+{
+    qint64 recvLen=0;
+    bool flag = false;
+    char Sendbuff[200] = "APS11000002%sEND";
+    char Recvbuff[4096] = {'\0'};
+    int optcount = 0;
+    int length = 0,index = 0;
+    char ID[13] = {'\0'};
+    memset(Recvbuff,0x00,200);
+    sprintf(Sendbuff,"APS11002602%sEND",ECUID);
+    qDebug("send:%s\n",Sendbuff);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,2000);
+    if(flag == true)
+    {
+        if(!memcmp(&Recvbuff[9],"12",2))
+        {
+            if(Recvbuff[12] == '1')
+            {   //ECU ID不匹配
+                statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+            }
+            else
+            {
+                if(recvLen == 14)
+                {
+                    statusBar()->showMessage(tr("Don't Have OPT700-RS ..."), 2000);
+                    return;
+                }else
+                {
+                    optcount = Recvbuff[13]*256 + Recvbuff[14];
+                    qDebug("optcount:%d\n",optcount);
+                    length = 15;
+                    qDebug("Recvbuff[length + 6] :%d %c \n",Recvbuff[length + 6],Recvbuff[length + 6]);
+                    for(index = 0;index < optcount;index++)
+                    {
+                        memset(ID,0x00,13);
+                        if(Recvbuff[length + 6] == 0)
+                        {
+                            sprintf(ID,"%02x%02x%02x%02x%02x%02x",Recvbuff[length],Recvbuff[length+1],Recvbuff[length+2],Recvbuff[length+3],Recvbuff[length+4],Recvbuff[length+5]);
+                            ID[12] = '\0';
+                            length += 13;
+                        }else if (Recvbuff[length + 6] == 1)
+                        {
+                            sprintf(ID,"%02x%02x%02x%02x%02x%02x",Recvbuff[length],Recvbuff[length+1],Recvbuff[length+2],Recvbuff[length+3],Recvbuff[length+4],Recvbuff[length+5]);
+                            ID[12] = '\0';
+                            length += 22;
+                        }
+                        ui->plainTextEdit_ID->appendPlainText(ID);
+                    }
+                    statusBar()->showMessage(tr("Import ID Success ..."), 2000);
+                }
+            }
+        }
+
+    }else
+    {
+        statusBar()->showMessage(tr("Please verify WIFI Connect ..."), 2000);
     }
 }

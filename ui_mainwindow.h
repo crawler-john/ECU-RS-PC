@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Fri Aug 4 14:32:35 2017
-**      by: Qt User Interface Compiler version 4.7.3
+** Created: Fri Aug 4 22:48:09 2017
+**      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -75,6 +75,7 @@ public:
     QPlainTextEdit *plainTextEdit_ID;
     QLabel *label_12;
     QLabel *label_13;
+    QPushButton *btn_ECUImport;
     QWidget *tab_2;
     QGroupBox *groupBox_5;
     QPushButton *btn_getSystem;
@@ -295,7 +296,7 @@ public:
         lineEdit_ID->setGeometry(QRect(10, 50, 113, 20));
         btn_addID = new QPushButton(groupBox_4);
         btn_addID->setObjectName(QString::fromUtf8("btn_addID"));
-        btn_addID->setGeometry(QRect(14, 80, 61, 23));
+        btn_addID->setGeometry(QRect(10, 80, 71, 23));
         btn_SetID = new QPushButton(groupBox_4);
         btn_SetID->setObjectName(QString::fromUtf8("btn_SetID"));
         btn_SetID->setGeometry(QRect(10, 110, 71, 23));
@@ -308,6 +309,9 @@ public:
         label_13 = new QLabel(groupBox_4);
         label_13->setObjectName(QString::fromUtf8("label_13"));
         label_13->setGeometry(QRect(130, 20, 111, 20));
+        btn_ECUImport = new QPushButton(groupBox_4);
+        btn_ECUImport->setObjectName(QString::fromUtf8("btn_ECUImport"));
+        btn_ECUImport->setGeometry(QRect(10, 140, 75, 23));
         tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QString::fromUtf8("tab_2"));
@@ -423,6 +427,7 @@ public:
         plainTextEdit_ID->setPlainText(QString());
         label_12->setText(QApplication::translate("MainWindow", "\351\234\200\350\246\201\346\267\273\345\212\240\347\232\204ID", 0, QApplication::UnicodeUTF8));
         label_13->setText(QApplication::translate("MainWindow", "\351\234\200\350\246\201\346\263\250\345\206\214\347\232\204ID\345\210\227\350\241\250", 0, QApplication::UnicodeUTF8));
+        btn_ECUImport->setText(QApplication::translate("MainWindow", "ECU\345\257\274\345\205\245ID", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "\345\237\272\346\234\254\350\257\267\346\261\202", 0, QApplication::UnicodeUTF8));
         groupBox_5->setTitle(QApplication::translate("MainWindow", "\347\263\273\347\273\237\344\277\241\346\201\257", 0, QApplication::UnicodeUTF8));
         btn_getSystem->setText(QApplication::translate("MainWindow", "\350\216\267\345\217\226\347\263\273\347\273\237\344\277\241\346\201\257", 0, QApplication::UnicodeUTF8));

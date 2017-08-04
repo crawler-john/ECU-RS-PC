@@ -11,6 +11,8 @@ TEMPLATE = app
 
 DESTDIR = $$PWD/Target/XP
 
+TRANSLATIONS = Language_Eng.ts
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     rsclient.cpp
