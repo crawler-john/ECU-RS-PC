@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>546</width>
+    <width>803</width>
     <height>516</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>531</width>
+      <width>791</width>
       <height>451</height>
      </rect>
     </property>
@@ -90,6 +90,8 @@ QPushButton{
 color:#0000ff;
 border:26px;
 solid #FFFFFF;
+border: 1px solid green;
+border-radius:10px;
 }
 QPushButton:hover{
 color:#FF0000;
@@ -483,7 +485,7 @@ font: 75 14pt &quot;Agency FB&quot;;
        <rect>
         <x>260</x>
         <y>10</y>
-        <width>261</width>
+        <width>511</width>
         <height>411</height>
        </rect>
       </property>
@@ -531,7 +533,7 @@ font: 75 14pt &quot;Agency FB&quot;;
         <rect>
          <x>130</x>
          <y>50</y>
-         <width>121</width>
+         <width>191</width>
          <height>351</height>
         </rect>
        </property>
@@ -576,23 +578,13 @@ font: 75 14pt &quot;Agency FB&quot;;
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>541</width>
+        <width>771</width>
         <height>421</height>
        </rect>
       </property>
       <property name="title">
        <string>系统信息</string>
       </property>
-      <widget class="QTableView" name="tableView">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>50</y>
-         <width>531</width>
-         <height>361</height>
-        </rect>
-       </property>
-      </widget>
       <widget class="QPushButton" name="btn_getSystem">
        <property name="geometry">
         <rect>
@@ -606,6 +598,86 @@ font: 75 14pt &quot;Agency FB&quot;;
         <string>获取系统信息</string>
        </property>
       </widget>
+      <widget class="QTableWidget" name="tableWidget">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>41</y>
+         <width>761</width>
+         <height>371</height>
+        </rect>
+       </property>
+       <column>
+        <property name="text">
+         <string>ID</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>设备状态</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>开关机</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>功能开关</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>PV1欠压</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>PV1欠压</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>心跳次数</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>超时次数</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>当天关机数</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>PV1输入电压</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>PV2输入电压</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>输入电流</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>PV1输入功率</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>PV2输入功率</string>
+        </property>
+       </column>
+      </widget>
      </widget>
     </widget>
    </widget>
@@ -615,7 +687,7 @@ font: 75 14pt &quot;Agency FB&quot;;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>546</width>
+     <width>803</width>
      <height>23</height>
     </rect>
    </property>

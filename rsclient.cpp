@@ -11,16 +11,15 @@ RSClient::~RSClient()
     rsClient = NULL;
 }
 
-bool RSClient::ECU_Communication(char *Sendbuff, char *Recvbuff,int timeout)
+bool RSClient::ECU_Communication(char *Sendbuff,qint64 sendLen, char *Recvbuff,qint64 *recvLen,int timeout)
 {
-    qint64 recvcount = 0;
-    rsClient->connectToHost(QHostAddress("192.168.1.106"), 8899);
+    rsClient->connectToHost(QHostAddress("10.10.100.254"), 8899);
     rsClient->write(Sendbuff);
     rsClient->waitForReadyRead(timeout);
-    recvcount = rsClient->read(Recvbuff,4096);
-    qDebug("%s\n",Recvbuff);
+    *recvLen = rsClient->read(Recvbuff,4096);
+    qDebug("recv :%s\n",Recvbuff);
     rsClient->abort();
-    if(recvcount > 0)
+    if(*recvLen > 0)
     {
         return true;
     }else
