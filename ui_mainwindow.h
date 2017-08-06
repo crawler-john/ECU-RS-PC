@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Fri Aug 4 23:07:14 2017
-**      by: Qt User Interface Compiler version 4.8.1
+** Created: Sun Aug 6 19:49:58 2017
+**      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -326,8 +326,8 @@ public:
         btn_getSystem->setObjectName(QString::fromUtf8("btn_getSystem"));
         btn_getSystem->setGeometry(QRect(10, 20, 75, 21));
         tableWidget = new QTableWidget(groupBox_5);
-        if (tableWidget->columnCount() < 14)
-            tableWidget->setColumnCount(14);
+        if (tableWidget->columnCount() < 16)
+            tableWidget->setColumnCount(16);
         QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
         tableWidget->setHorizontalHeaderItem(0, __qtablewidgetitem);
         QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
@@ -356,6 +356,10 @@ public:
         tableWidget->setHorizontalHeaderItem(12, __qtablewidgetitem12);
         QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
         tableWidget->setHorizontalHeaderItem(13, __qtablewidgetitem13);
+        QTableWidgetItem *__qtablewidgetitem14 = new QTableWidgetItem();
+        tableWidget->setHorizontalHeaderItem(14, __qtablewidgetitem14);
+        QTableWidgetItem *__qtablewidgetitem15 = new QTableWidgetItem();
+        tableWidget->setHorizontalHeaderItem(15, __qtablewidgetitem15);
         tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
         tableWidget->setGeometry(QRect(5, 41, 761, 371));
         label_14 = new QLabel(groupBox_5);
@@ -480,6 +484,10 @@ public:
         ___qtablewidgetitem12->setText(QApplication::translate("MainWindow", "PV1\350\276\223\345\205\245\345\212\237\347\216\207", 0, QApplication::UnicodeUTF8));
         QTableWidgetItem *___qtablewidgetitem13 = tableWidget->horizontalHeaderItem(13);
         ___qtablewidgetitem13->setText(QApplication::translate("MainWindow", "PV2\350\276\223\345\205\245\345\212\237\347\216\207", 0, QApplication::UnicodeUTF8));
+        QTableWidgetItem *___qtablewidgetitem14 = tableWidget->horizontalHeaderItem(14);
+        ___qtablewidgetitem14->setText(QApplication::translate("MainWindow", "\350\276\223\345\207\272\347\224\265\345\216\213", 0, QApplication::UnicodeUTF8));
+        QTableWidgetItem *___qtablewidgetitem15 = tableWidget->horizontalHeaderItem(15);
+        ___qtablewidgetitem15->setText(QApplication::translate("MainWindow", "\344\277\241\345\217\267\345\274\272\345\272\246", 0, QApplication::UnicodeUTF8));
         label_14->setText(QApplication::translate("MainWindow", "\346\200\273\345\217\260\346\225\260\357\274\232", 0, QApplication::UnicodeUTF8));
         label_all->setText(QString());
         label_open->setText(QString());

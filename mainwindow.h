@@ -20,6 +20,8 @@ typedef struct
     unsigned char PI;
     unsigned short Power1;
     unsigned short Power2;
+    unsigned short Output_PV;
+    unsigned char RSSI;
 } OPT700_RS;
 
 

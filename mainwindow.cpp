@@ -29,6 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->setColumnWidth(11,60);
     ui->tableWidget->setColumnWidth(12,80);
     ui->tableWidget->setColumnWidth(13,80);
+    ui->tableWidget->setColumnWidth(14,80);
+    ui->tableWidget->setColumnWidth(15,80);
+
 
 }
 
@@ -267,6 +270,57 @@ void MainWindow::on_btn_getSystem_clicked()
 
     if(flag == true)
     {
+        //回复的是02命令
+        if(!memcmp(&Recvbuff[9],"12",2))
+        {
+            if(Recvbuff[12] == '1')
+            {   //ECU ID不匹配
+                statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+            }
+            else
+            {
+                if(recvLen == 14)
+                {
+                    ui->tableWidget->setRowCount(0);
+                    //清空Table中内容
+                    ui->tableWidget->clearContents();
+
+                    statusBar()->showMessage(tr("Don't Have OPT700-RS ..."), 2000);
+                    return;
+                }else
+                {
+                    optcount = (recvLen-17)/11;
+                    length = 13;
+                    for(index = 0;index < optcount;index++)
+                    {
+                        OPT700_RS *opt700_rs = new OPT700_RS;
+
+                        sprintf(opt700_rs->ID,"%02x%02x%02x%02x%02x%02x",Recvbuff[length],Recvbuff[length+1],Recvbuff[length+2],Recvbuff[length+3],Recvbuff[length+4],Recvbuff[length+5]);
+                        opt700_rs->ID[12] = '\0';
+                        opt700_rs->Equipment_Status = 0;
+                        opt700_rs->Mos_Status = Recvbuff[length+10] & 1;
+                        opt700_rs->Function_Status = (Recvbuff[length+10])&(1<<1);
+                        opt700_rs->PV1_Protect = 0;
+                        opt700_rs->PV2_Protect = 0;
+                        opt700_rs->Heart_Rate = Recvbuff[length+6]*256+Recvbuff[length+7];
+                        opt700_rs->Off_Times = Recvbuff[length+8]*256+Recvbuff[length+9];
+                        opt700_rs->Shutdown_Num = 0;
+                        opt700_rs->PV1 = 0;
+                        opt700_rs->PV2 = 0;
+                        opt700_rs->PI = 0;
+                        opt700_rs->Power1 = 0;
+                        opt700_rs->Power2 = 0;
+                        OPT700_RSList.push_back(opt700_rs);
+
+                        length += 11;
+
+
+                    }
+                }
+            }
+        }
+
+        //回复的是12命令
         if(!memcmp(&Recvbuff[9],"12",2))
         {
             if(Recvbuff[12] == '1')
@@ -358,6 +412,9 @@ void MainWindow::on_btn_getSystem_clicked()
             }
         }
 
+        //回复的是22命令
+
+
     }else
     {
         ui->tableWidget->setRowCount(0);
@@ -392,6 +449,9 @@ void MainWindow::addTableData(QTableWidget *table, QList<OPT700_RS *> &List)
         QTableWidgetItem *item11 = new QTableWidgetItem();
         QTableWidgetItem *item12 = new QTableWidgetItem();
         QTableWidgetItem *item13 = new QTableWidgetItem();
+        QTableWidgetItem *item14 = new QTableWidgetItem();
+        QTableWidgetItem *item15 = new QTableWidgetItem();
+
 
         if((*iter)->Equipment_Status == 0)
         {
@@ -409,6 +469,8 @@ void MainWindow::addTableData(QTableWidget *table, QList<OPT700_RS *> &List)
             item11->setText("-");
             item12->setText("-");
             item13->setText("-");
+            item14->setText("-");
+            item15->setText("-");
 
         }else if((*iter)->Equipment_Status == 1)
         {
@@ -427,6 +489,8 @@ void MainWindow::addTableData(QTableWidget *table, QList<OPT700_RS *> &List)
             item11->setText(QString::number((*iter)->PI));
             item12->setText(QString::number((*iter)->Power1));
             item13->setText(QString::number((*iter)->Power2));
+            item14->setText("-");
+            item15->setText("-");
         }
 
         if((*iter)->Mos_Status == 1)

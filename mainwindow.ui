@@ -690,6 +690,16 @@ font: 75 14pt &quot;Agency FB&quot;;
          <string>PV2输入功率</string>
         </property>
        </column>
+       <column>
+        <property name="text">
+         <string>输出电压</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>信号强度</string>
+        </property>
+       </column>
       </widget>
       <widget class="QLabel" name="label_14">
        <property name="geometry">
