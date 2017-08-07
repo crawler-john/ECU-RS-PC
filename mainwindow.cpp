@@ -271,7 +271,7 @@ void MainWindow::on_btn_getSystem_clicked()
     if(flag == true)
     {
         //回复的是02命令
-        if(!memcmp(&Recvbuff[9],"12",2))
+        if(!memcmp(&Recvbuff[9],"02",2))
         {
             if(Recvbuff[12] == '1')
             {   //ECU ID不匹配
