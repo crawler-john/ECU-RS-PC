@@ -208,18 +208,19 @@ void MainWindow::on_btn_SetID_clicked()
     char packlength[5] = {'\0'};
     int length = ui->plainTextEdit_ID->toPlainText().length();
     OPTCount = (length + 1)/13;
-    //qDebug("%d,%s",length,ui->plainTextEdit_ID->toPlainText().toLatin1().data());
+    qDebug("%d,%s",length,ui->plainTextEdit_ID->toPlainText().toLatin1().data());
     memcpy(text,ui->plainTextEdit_ID->toPlainText().toLatin1().data(),length);
 
     for(index = 0;index<OPTCount;index++)
     {
+        memset(ID_BCD,0x00,7);
         ID_BCD[0] = (text[0+index*13] - '0')*16 + (text[1+index*13] - '0');
         ID_BCD[1] = (text[2+index*13] - '0')*16 + (text[3+index*13] - '0');
         ID_BCD[2] = (text[4+index*13] - '0')*16 + (text[5+index*13] - '0');
         ID_BCD[3] = (text[6+index*13] - '0')*16 + (text[7+index*13] - '0');
-        ID_BCD[4] = (text[7+index*13] - '0')*16 + (text[9+index*13] - '0');
+        ID_BCD[4] = (text[8+index*13] - '0')*16 + (text[9+index*13] - '0');
         ID_BCD[5] = (text[10+index*13] - '0')*16 + (text[11+index*13] - '0');
-        qDebug("%02x%02x%02x%02x%02x%02x\n",ID_BCD[0],ID_BCD[1],ID_BCD[2],ID_BCD[3],ID_BCD[4],ID_BCD[5]);
+        qDebug("%02x %02x %02x %02x %02x %02x \n",ID_BCD[0],ID_BCD[1],ID_BCD[2],ID_BCD[3],ID_BCD[4],ID_BCD[5]);
         memcpy(&ID_BCD_List[index*6],ID_BCD,6);
     }
 
@@ -295,7 +296,7 @@ void MainWindow::on_btn_getSystem_clicked()
                     {
                         OPT700_RS *opt700_rs = new OPT700_RS;
 
-                        sprintf(opt700_rs->ID,"%02x%02x%02x%02x%02x%02x",Recvbuff[length],Recvbuff[length+1],Recvbuff[length+2],Recvbuff[length+3],Recvbuff[length+4],Recvbuff[length+5]);
+                        sprintf(opt700_rs->ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
                         opt700_rs->ID[12] = '\0';
                         opt700_rs->Equipment_Status = 0;
                         opt700_rs->Mos_Status = Recvbuff[length+10] & 1;
@@ -310,12 +311,30 @@ void MainWindow::on_btn_getSystem_clicked()
                         opt700_rs->PI = 0;
                         opt700_rs->Power1 = 0;
                         opt700_rs->Power2 = 0;
+                        opt700_rs->Output_PV = 0;
+                        opt700_rs->RSSI = 0;
                         OPT700_RSList.push_back(opt700_rs);
 
                         length += 11;
-
+                        if(opt700_rs->Mos_Status == 1)
+                        {
+                            openCount++;
+                        }else
+                        {
+                            closeCount++;
+                        }
 
                     }
+
+                    ui->label_all->setText(QString::number(optcount));
+                    ui->label_open->setText(QString::number(openCount));
+                    ui->label_close->setText(QString::number(closeCount));
+                    addTableData(ui->tableWidget,OPT700_RSList);
+                    QList<OPT700_RS *>::Iterator iter = OPT700_RSList.begin();
+                    for ( ; iter != OPT700_RSList.end(); iter++)  {
+                        delete (*iter);
+                    }
+
                 }
             }
         }
@@ -348,7 +367,8 @@ void MainWindow::on_btn_getSystem_clicked()
                         OPT700_RS *opt700_rs = new OPT700_RS;
                         if(Recvbuff[length + 6] == 0)
                         {
-                            sprintf(opt700_rs->ID,"%02x%02x%02x%02x%02x%02x",Recvbuff[length],Recvbuff[length+1],Recvbuff[length+2],Recvbuff[length+3],Recvbuff[length+4],Recvbuff[length+5]);
+
+                            sprintf(opt700_rs->ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
                             opt700_rs->ID[12] = '\0';
                             opt700_rs->Equipment_Status = 0;
                             opt700_rs->Mos_Status = Recvbuff[length+7] & 1;
@@ -363,12 +383,14 @@ void MainWindow::on_btn_getSystem_clicked()
                             opt700_rs->PI = 0;
                             opt700_rs->Power1 = 0;
                             opt700_rs->Power2 = 0;
+                            opt700_rs->Output_PV = 0;
+                            opt700_rs->RSSI = 0;
                             OPT700_RSList.push_back(opt700_rs);
 
                             length += 13;
                         }else if (Recvbuff[length + 6] == 1)
                         {
-                            sprintf(opt700_rs->ID,"%02x%02x%02x%02x%02x%02x",Recvbuff[length],Recvbuff[length+1],Recvbuff[length+2],Recvbuff[length+3],Recvbuff[length+4],Recvbuff[length+5]);
+                            sprintf(opt700_rs->ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
                             opt700_rs->ID[12] = '\0';
                             opt700_rs->Equipment_Status = 1;
                             opt700_rs->Mos_Status = Recvbuff[length+7] & 1;
@@ -383,6 +405,8 @@ void MainWindow::on_btn_getSystem_clicked()
                             opt700_rs->PI = Recvbuff[length+17];
                             opt700_rs->Power1 = Recvbuff[length+18]*256+Recvbuff[length+19];
                             opt700_rs->Power2 = Recvbuff[length+20]*256+Recvbuff[length+21];
+                            opt700_rs->Output_PV = 0;
+                            opt700_rs->RSSI = 0;
                             OPT700_RSList.push_back(opt700_rs);
 
 
@@ -413,7 +437,101 @@ void MainWindow::on_btn_getSystem_clicked()
         }
 
         //回复的是22命令
+        if(!memcmp(&Recvbuff[9],"22",2))
+        {
+            if(Recvbuff[12] == '1')
+            {   //ECU ID不匹配
+                statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+            }
+            else
+            {
+                if(recvLen == 19)
+                {
+                    ui->tableWidget->setRowCount(0);
+                    //清空Table中内容
+                    ui->tableWidget->clearContents();
 
+                    statusBar()->showMessage(tr("Don't Have OPT700-RS ..."), 2000);
+                    return;
+                }else
+                {
+                    optcount = Recvbuff[13]*256 + Recvbuff[14];
+                    qDebug("optcount:%d\n",optcount);
+                    length = 15;
+                    qDebug("Recvbuff[length + 6] :%d %c \n",Recvbuff[length + 6],Recvbuff[length + 6]);
+                    for(index = 0;index < optcount;index++)
+                    {
+                        OPT700_RS *opt700_rs = new OPT700_RS;
+                        if(Recvbuff[length + 6] == 0)
+                        {
+                            sprintf(opt700_rs->ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
+                            opt700_rs->ID[12] = '\0';
+                            opt700_rs->Equipment_Status = 0;
+                            opt700_rs->Mos_Status = Recvbuff[length+7] & 1;
+                            opt700_rs->Function_Status = ((Recvbuff[length+7])&(1<<1) >> 1);
+                            opt700_rs->PV1_Protect = 0;
+                            opt700_rs->PV2_Protect = 0;
+                            opt700_rs->Heart_Rate = Recvbuff[length+8]*256+Recvbuff[length+9];
+                            opt700_rs->Off_Times = Recvbuff[length+10]*256+Recvbuff[length+11];
+                            opt700_rs->Shutdown_Num = Recvbuff[length+12];
+                            opt700_rs->PV1 = 0;
+                            opt700_rs->PV2 = 0;
+                            opt700_rs->PI = 0;
+                            opt700_rs->Power1 = 0;
+                            opt700_rs->Power2 = 0;
+                            opt700_rs->Output_PV = 0;
+                            opt700_rs->RSSI = 0;
+                            OPT700_RSList.push_back(opt700_rs);
+
+                            length += 19;
+                        }else if (Recvbuff[length + 6] == 1)
+                        {
+                            sprintf(opt700_rs->ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
+                            opt700_rs->ID[12] = '\0';
+                            opt700_rs->Equipment_Status = 1;
+                            opt700_rs->Mos_Status = Recvbuff[length+7] & 1;
+                            opt700_rs->Function_Status = ((Recvbuff[length+7])&(1<<1) >> 1);
+                            opt700_rs->PV1_Protect = ((Recvbuff[length+7])&(1<<2) >> 2);
+                            opt700_rs->PV2_Protect = ((Recvbuff[length+7])&(1<<3) >> 3);
+                            opt700_rs->Heart_Rate = Recvbuff[length+8]*256+Recvbuff[length+9];
+                            opt700_rs->Off_Times = Recvbuff[length+10]*256+Recvbuff[length+11];
+                            opt700_rs->Shutdown_Num = Recvbuff[length+12];
+                            opt700_rs->PV1 = Recvbuff[length+13]*256+Recvbuff[length+14];
+                            opt700_rs->PV2 = Recvbuff[length+15]*256+Recvbuff[length+16];
+                            opt700_rs->PI = Recvbuff[length+17];
+                            opt700_rs->Power1 = Recvbuff[length+18]*256+Recvbuff[length+19];
+                            opt700_rs->Power2 = Recvbuff[length+20]*256+Recvbuff[length+21];
+                            opt700_rs->Output_PV = Recvbuff[length+22]*256+Recvbuff[length+23];
+                            opt700_rs->RSSI = Recvbuff[length+24];
+
+                            OPT700_RSList.push_back(opt700_rs);
+
+
+                            length += 31;
+                        }
+
+                        if(opt700_rs->Mos_Status == 1)
+                        {
+                            openCount++;
+                        }else
+                        {
+                            closeCount++;
+                        }
+                    }
+
+
+                    statusBar()->showMessage(tr("Get System Info Success ..."), 2000);
+                    ui->label_all->setText(QString::number(optcount));
+                    ui->label_open->setText(QString::number(openCount));
+                    ui->label_close->setText(QString::number(closeCount));
+                    addTableData(ui->tableWidget,OPT700_RSList);
+                    QList<OPT700_RS *>::Iterator iter = OPT700_RSList.begin();
+                    for ( ; iter != OPT700_RSList.end(); iter++)  {
+                        delete (*iter);
+                    }
+                }
+            }
+        }
 
     }else
     {
@@ -489,8 +607,16 @@ void MainWindow::addTableData(QTableWidget *table, QList<OPT700_RS *> &List)
             item11->setText(QString::number((*iter)->PI));
             item12->setText(QString::number((*iter)->Power1));
             item13->setText(QString::number((*iter)->Power2));
-            item14->setText("-");
-            item15->setText("-");
+            if((*iter)->RSSI == 0)
+            {
+                item14->setText("-");
+                item15->setText("-");
+            }else
+            {
+                item14->setText(QString::number((*iter)->Output_PV));
+                item15->setText(QString::number((*iter)->RSSI));
+            }
+
         }
 
         if((*iter)->Mos_Status == 1)
@@ -525,6 +651,8 @@ void MainWindow::addTableData(QTableWidget *table, QList<OPT700_RS *> &List)
         table->setItem(row_count, 11, item11);
         table->setItem(row_count, 12, item12);
         table->setItem(row_count, 13, item13);
+        table->setItem(row_count, 14, item14);
+        table->setItem(row_count, 15, item15);
 
     }
 }
@@ -541,9 +669,43 @@ void MainWindow::on_btn_ECUImport_clicked()
     memset(Recvbuff,0x00,200);
     sprintf(Sendbuff,"APS11002602%sEND",ECUID);
     qDebug("send:%s\n",Sendbuff);
+    ui->plainTextEdit_ID->clear();
     flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,2000);
+
     if(flag == true)
     {
+        //回复的是02命令
+        if(!memcmp(&Recvbuff[9],"02",2))
+        {
+            if(Recvbuff[12] == '1')
+            {   //ECU ID不匹配
+                statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+            }
+            else
+            {
+                if(recvLen == 14)
+                {
+                    statusBar()->showMessage(tr("Don't Have OPT700-RS ..."), 2000);
+                    return;
+                }else
+                {
+                    optcount = (recvLen-17)/11;
+                    length = 13;
+                    for(index = 0;index < optcount;index++)
+                    {
+                        memset(ID,0x00,13);
+                        sprintf(ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
+                        ID[12] = '\0';
+                        length += 11;
+                        ui->plainTextEdit_ID->appendPlainText(ID);
+
+                    }
+                    statusBar()->showMessage(tr("Import ID Success ..."), 2000);
+                }
+            }
+        }
+
+
         if(!memcmp(&Recvbuff[9],"12",2))
         {
             if(Recvbuff[12] == '1')
@@ -567,12 +729,12 @@ void MainWindow::on_btn_ECUImport_clicked()
                         memset(ID,0x00,13);
                         if(Recvbuff[length + 6] == 0)
                         {
-                            sprintf(ID,"%02x%02x%02x%02x%02x%02x",Recvbuff[length],Recvbuff[length+1],Recvbuff[length+2],Recvbuff[length+3],Recvbuff[length+4],Recvbuff[length+5]);
+                            sprintf(ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
                             ID[12] = '\0';
                             length += 13;
                         }else if (Recvbuff[length + 6] == 1)
                         {
-                            sprintf(ID,"%02x%02x%02x%02x%02x%02x",Recvbuff[length],Recvbuff[length+1],Recvbuff[length+2],Recvbuff[length+3],Recvbuff[length+4],Recvbuff[length+5]);
+                            sprintf(ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
                             ID[12] = '\0';
                             length += 22;
                         }
@@ -582,6 +744,49 @@ void MainWindow::on_btn_ECUImport_clicked()
                 }
             }
         }
+
+        //回复的是22命令
+        if(!memcmp(&Recvbuff[9],"22",2))
+        {
+            if(Recvbuff[12] == '1')
+            {   //ECU ID不匹配
+                statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+            }
+            else
+            {
+                if(recvLen == 19)
+                {
+                    statusBar()->showMessage(tr("Don't Have OPT700-RS ..."), 2000);
+                    return;
+                }else
+                {
+                    optcount = Recvbuff[13]*256 + Recvbuff[14];
+                    qDebug("optcount:%d\n",optcount);
+                    length = 15;
+                    qDebug("Recvbuff[length + 6] :%d %c \n",Recvbuff[length + 6],Recvbuff[length + 6]);
+                    for(index = 0;index < optcount;index++)
+                    {
+                        if(Recvbuff[length + 6] == 0)
+                        {
+                            sprintf(ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
+                            ID[12] = '\0';
+                            length += 19;
+                        }else if (Recvbuff[length + 6] == 1)
+                        {
+                            sprintf(ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
+                            ID[12] = '\0';
+
+                            length += 31;
+                        }
+                        ui->plainTextEdit_ID->appendPlainText(ID);
+                    }
+
+
+                    statusBar()->showMessage(tr("Import ID Success ..."), 2000);
+                }
+            }
+        }
+
 
     }else
     {
