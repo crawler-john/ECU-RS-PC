@@ -352,7 +352,7 @@ void MainWindow::on_btn_getSystem_clicked()
                             opt700_rs->ID[12] = '\0';
                             opt700_rs->Equipment_Status = 0;
                             opt700_rs->Mos_Status = Recvbuff[length+7] & 1;
-                            opt700_rs->Function_Status = (Recvbuff[length+7])&(1<<1);
+                            opt700_rs->Function_Status = ((Recvbuff[length+7])&(1<<1) >> 1);
                             opt700_rs->PV1_Protect = 0;
                             opt700_rs->PV2_Protect = 0;
                             opt700_rs->Heart_Rate = Recvbuff[length+8]*256+Recvbuff[length+9];
@@ -372,9 +372,9 @@ void MainWindow::on_btn_getSystem_clicked()
                             opt700_rs->ID[12] = '\0';
                             opt700_rs->Equipment_Status = 1;
                             opt700_rs->Mos_Status = Recvbuff[length+7] & 1;
-                            opt700_rs->Function_Status = (Recvbuff[length+7])&(1<<1);
-                            opt700_rs->PV1_Protect = (Recvbuff[length+7])&(1<<1);
-                            opt700_rs->PV2_Protect = (Recvbuff[length+7])&(1<<1);
+                            opt700_rs->Function_Status = ((Recvbuff[length+7])&(1<<1) >> 1);
+                            opt700_rs->PV1_Protect = ((Recvbuff[length+7])&(1<<2) >> 2);
+                            opt700_rs->PV2_Protect = ((Recvbuff[length+7])&(1<<3) >> 3);
                             opt700_rs->Heart_Rate = Recvbuff[length+8]*256+Recvbuff[length+9];
                             opt700_rs->Off_Times = Recvbuff[length+10]*256+Recvbuff[length+11];
                             opt700_rs->Shutdown_Num = Recvbuff[length+12];
