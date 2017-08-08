@@ -6,6 +6,7 @@
 
 QT       += core gui network
 
+RC_FILE = myapp.rc
 TARGET = ECU-RS-PC
 TEMPLATE = app
 
@@ -21,3 +22,9 @@ HEADERS  += mainwindow.h \
     rsclient.h
 
 FORMS    += mainwindow.ui
+
+OTHER_FILES += \
+    myappico.ico \
+    myapp.rc
+
+
