@@ -12,7 +12,7 @@ typedef struct
     unsigned char Function_Status;
     unsigned char PV1_Protect;
     unsigned char PV2_Protect;
-    unsigned short Heart_Rate;
+    unsigned long Heart_Rate;
     unsigned short Off_Times;
     unsigned char Shutdown_Num;
     unsigned short PV1;
