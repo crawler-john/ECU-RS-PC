@@ -208,7 +208,7 @@ void MainWindow::on_btn_SetID_clicked()
     char packlength[5] = {'\0'};
     int length = ui->plainTextEdit_ID->toPlainText().length();
     OPTCount = (length + 1)/13;
-    qDebug("%d,%s",length,ui->plainTextEdit_ID->toPlainText().toLatin1().data());
+    qDebug("%d %d,%s",OPTCount,length,ui->plainTextEdit_ID->toPlainText().toLatin1().data());
     memcpy(text,ui->plainTextEdit_ID->toPlainText().toLatin1().data(),length);
 
     for(index = 0;index<OPTCount;index++)
@@ -235,7 +235,6 @@ void MainWindow::on_btn_SetID_clicked()
 
     memset(Recvbuff,0x00,200);
     qDebug("len:%d send:%s\n",(OPTCount*6+29),Sendbuff);
-
 
     flag = ECU_RSClient->ECU_Communication(Sendbuff,(OPTCount*6+29),Recvbuff,&recvLen,3000);
     if(flag == true)
