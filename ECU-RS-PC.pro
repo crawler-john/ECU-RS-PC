@@ -16,10 +16,12 @@ TRANSLATIONS = Language_Eng.ts
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    rsclient.cpp
+    rsclient.cpp \
+    commudp.cpp
 
 HEADERS  += mainwindow.h \
-    rsclient.h
+    rsclient.h \
+    commudp.h
 
 FORMS    += mainwindow.ui
 
