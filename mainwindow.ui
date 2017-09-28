@@ -644,8 +644,8 @@ font: 75 14pt &quot;Agency FB&quot;;
         <rect>
          <x>10</x>
          <y>60</y>
-         <width>231</width>
-         <height>111</height>
+         <width>254</width>
+         <height>126</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">

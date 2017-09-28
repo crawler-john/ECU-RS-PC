@@ -379,7 +379,7 @@ void MainWindow::on_btn_getSystem_clicked()
 
     flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,10000);
     OPT700_RSList.clear();
-
+    ui->comboBox_UID->clear();
     if(flag == true)
     {
         //»Ø¸´µÄÊÇ02ÃüÁî
@@ -1391,7 +1391,7 @@ void MainWindow::on_btn_getInfo_clicked()
     uid[5] = (uid_str[10] - '0')*0x10 + (uid_str[11] - '0');
     memcpy(&Sendbuff[34],uid,6);
 
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,43,Recvbuff,&recvLen,10000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,43,Recvbuff,&recvLen,15000);
     OPT700_RS_INFOList.clear();
 
     if(flag == true)
