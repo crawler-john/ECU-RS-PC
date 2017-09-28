@@ -124,6 +124,7 @@ private slots:
 
     void on_btn_getInfo_clicked();
 
+    void on_btn_config_clicked();
 private:
     Ui::MainWindow *ui;
     RSClient *ECU_RSClient;

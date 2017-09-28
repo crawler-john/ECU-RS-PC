@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle(tr("ECU-R-RS Test V%1.%2").arg(MAJOR_VERSION).arg(MINOR_VERSION));
-    setFixedSize(791,480);
+    setFixedSize(791,520);
     ECU_RSClient = new RSClient;
     UDPClient1 = new CommUDP("10.10.100.254",49000);
     UDPClient2 = new CommUDP("10.10.100.254",48899);
@@ -377,7 +377,7 @@ void MainWindow::on_btn_getSystem_clicked()
     memset(Recvbuff,0x00,200);
     sprintf(Sendbuff,"APS11002602%sEND",ECUID);
 
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,2000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,10000);
     OPT700_RSList.clear();
 
     if(flag == true)
@@ -391,7 +391,7 @@ void MainWindow::on_btn_getSystem_clicked()
             }
             else
             {
-                if(recvLen == 19)
+                if(recvLen == 14)
                 {
                     ui->tableWidget->setRowCount(0);
                     //Çå¿ÕTableÖÐÄÚÈÝ
@@ -401,6 +401,7 @@ void MainWindow::on_btn_getSystem_clicked()
                     return;
                 }else
                 {
+
                     optcount = Recvbuff[13]*256 + Recvbuff[14];
                     qDebug("optcount:%d\n",optcount);
                     length = 15;
@@ -590,7 +591,7 @@ void MainWindow::on_btn_ECUImport_clicked()
     sprintf(Sendbuff,"APS11002602%sEND",ECUID);
 
     ui->plainTextEdit_ID->clear();
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,2000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,10000);
 
     if(flag == true)
     {
@@ -609,14 +610,15 @@ void MainWindow::on_btn_ECUImport_clicked()
                     return;
                 }else
                 {
-                    optcount = (recvLen-17)/11;
-                    length = 13;
+                    optcount = Recvbuff[13]*256 + Recvbuff[14];
+                    qDebug("optcount:%d\n",optcount);
+                    length = 15;
                     for(index = 0;index < optcount;index++)
                     {
                         memset(ID,0x00,13);
                         sprintf(ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
                         ID[12] = '\0';
-                        length += 11;
+                        length += 56;
                         ui->plainTextEdit_ID->appendPlainText(ID);
 
                     }
@@ -1191,7 +1193,7 @@ void MainWindow::on_btn_getPower_clicked()
     memset(Recvbuff,0x00,8192);
     sprintf(Sendbuff,"APS11003712%sEND%02d%02d%02dEND",ECUID,year,month,day);
 
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,37,Recvbuff,&recvLen,2000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,37,Recvbuff,&recvLen,5000);
     PowerData_List.clear();
 
     if(flag == true)
@@ -1259,7 +1261,7 @@ void MainWindow::on_btn_getEnergy_clicked()
     sprintf(Sendbuff,"APS11003908%sEND%02d%02d%02d%02dEND",ECUID,year,month,day,select_item);
     qDebug("send:%s\n",Sendbuff);
 
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,39,Recvbuff,&recvLen,2000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,39,Recvbuff,&recvLen,5000);
     EnergyData_List.clear();
 
     if(flag == true)
@@ -1389,7 +1391,7 @@ void MainWindow::on_btn_getInfo_clicked()
     uid[5] = (uid_str[10] - '0')*0x10 + (uid_str[11] - '0');
     memcpy(&Sendbuff[34],uid,6);
 
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,43,Recvbuff,&recvLen,5000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,43,Recvbuff,&recvLen,10000);
     OPT700_RS_INFOList.clear();
 
     if(flag == true)
@@ -1445,3 +1447,16 @@ void MainWindow::on_btn_getInfo_clicked()
         statusBar()->showMessage(tr("Please verify WIFI Connect ..."), 2000);
     }
 }
+
+void MainWindow::on_btn_config_clicked()
+{
+    if(ECU_RSClient != NULL)
+    {
+        delete ECU_RSClient;
+        ECU_RSClient = NULL;
+    }
+
+    ECU_RSClient = new RSClient(ui->lineEdit_IP->text(),ui->lineEdit_Port->text().toUShort());
+    statusBar()->showMessage(tr("Configure IP And Port Successful ..."), 1000);
+}
+

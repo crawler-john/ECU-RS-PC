@@ -9,13 +9,15 @@ class RSClient
 {
 public:
     RSClient();
+    RSClient(QString ip,quint16 port);
     ~RSClient();
 
 
     bool ECU_Communication(char *Sendbuff,qint64 sendLen, char *Recvbuff,qint64 *recvLen,int timeout);
 
 
-
+    QString IP;
+    quint16 Port;
 private:
     QTcpSocket *rsClient;
 };

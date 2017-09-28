@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sat Sep 23 16:58:22 2017
+** Created: Thu Sep 28 11:01:04 2017
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -143,6 +143,12 @@ public:
     QPushButton *btn_getWIFIStatus;
     QLabel *label_LinkStatus;
     QLabel *label_69;
+    QGroupBox *groupBox_7;
+    QLabel *label_16;
+    QLabel *label_18;
+    QLineEdit *lineEdit_IP;
+    QLineEdit *lineEdit_Port;
+    QPushButton *btn_config;
     QWidget *tab_2;
     QGroupBox *groupBox_5;
     QPushButton *btn_getSystem;
@@ -186,7 +192,7 @@ public:
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
-        tabWidget->setGeometry(QRect(10, 0, 791, 451));
+        tabWidget->setGeometry(QRect(10, 0, 791, 481));
         tabWidget->setStyleSheet(QString::fromUtf8("QWidget#centralwidget{\n"
 "	background-image:url(img/mainwindow.jpg);\n"
 "}\n"
@@ -264,7 +270,7 @@ public:
         tab->setObjectName(QString::fromUtf8("tab"));
         groupBox = new QGroupBox(tab);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        groupBox->setGeometry(QRect(0, 0, 241, 181));
+        groupBox->setGeometry(QRect(0, 80, 241, 181));
         groupBox->setStyleSheet(QString::fromUtf8("QGroupBox::title{\n"
 "font: 75 14pt \"Agency FB\";\n"
 "}"));
@@ -341,7 +347,7 @@ public:
 
         groupBox_2 = new QGroupBox(tab);
         groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
-        groupBox_2->setGeometry(QRect(0, 190, 241, 121));
+        groupBox_2->setGeometry(QRect(0, 270, 241, 91));
         comboBox_SetChannel = new QComboBox(groupBox_2);
         comboBox_SetChannel->setObjectName(QString::fromUtf8("comboBox_SetChannel"));
         comboBox_SetChannel->setGeometry(QRect(70, 21, 69, 22));
@@ -356,16 +362,16 @@ public:
         label_8->setGeometry(QRect(10, 60, 54, 21));
         label_9 = new QLabel(groupBox_2);
         label_9->setObjectName(QString::fromUtf8("label_9"));
-        label_9->setGeometry(QRect(10, 90, 54, 16));
+        label_9->setGeometry(QRect(110, 60, 54, 21));
         label_CurrentChannel = new QLabel(groupBox_2);
         label_CurrentChannel->setObjectName(QString::fromUtf8("label_CurrentChannel"));
-        label_CurrentChannel->setGeometry(QRect(80, 60, 71, 21));
+        label_CurrentChannel->setGeometry(QRect(70, 60, 31, 21));
         label_Stren = new QLabel(groupBox_2);
         label_Stren->setObjectName(QString::fromUtf8("label_Stren"));
-        label_Stren->setGeometry(QRect(80, 90, 71, 16));
+        label_Stren->setGeometry(QRect(180, 60, 41, 21));
         groupBox_3 = new QGroupBox(tab);
         groupBox_3->setObjectName(QString::fromUtf8("groupBox_3"));
-        groupBox_3->setGeometry(QRect(0, 310, 241, 101));
+        groupBox_3->setGeometry(QRect(0, 370, 241, 81));
         label_10 = new QLabel(groupBox_3);
         label_10->setObjectName(QString::fromUtf8("label_10"));
         label_10->setGeometry(QRect(10, 20, 54, 21));
@@ -380,10 +386,10 @@ public:
         lineEdit_newPasswd->setGeometry(QRect(60, 50, 101, 20));
         btn_setPasswd = new QPushButton(groupBox_3);
         btn_setPasswd->setObjectName(QString::fromUtf8("btn_setPasswd"));
-        btn_setPasswd->setGeometry(QRect(170, 70, 61, 23));
+        btn_setPasswd->setGeometry(QRect(170, 30, 61, 23));
         groupBox_4 = new QGroupBox(tab);
         groupBox_4->setObjectName(QString::fromUtf8("groupBox_4"));
-        groupBox_4->setGeometry(QRect(250, 189, 251, 181));
+        groupBox_4->setGeometry(QRect(250, 189, 251, 211));
         lineEdit_ID = new QLineEdit(groupBox_4);
         lineEdit_ID->setObjectName(QString::fromUtf8("lineEdit_ID"));
         lineEdit_ID->setGeometry(QRect(100, 20, 121, 20));
@@ -395,7 +401,7 @@ public:
         btn_SetID->setGeometry(QRect(70, 50, 71, 23));
         plainTextEdit_ID = new QPlainTextEdit(groupBox_4);
         plainTextEdit_ID->setObjectName(QString::fromUtf8("plainTextEdit_ID"));
-        plainTextEdit_ID->setGeometry(QRect(10, 100, 221, 71));
+        plainTextEdit_ID->setGeometry(QRect(10, 100, 221, 91));
         label_12 = new QLabel(groupBox_4);
         label_12->setObjectName(QString::fromUtf8("label_12"));
         label_12->setGeometry(QRect(10, 20, 81, 21));
@@ -636,7 +642,7 @@ public:
         label_mac->setGeometry(QRect(52, 43, 181, 16));
         groupBox_21 = new QGroupBox(tab);
         groupBox_21->setObjectName(QString::fromUtf8("groupBox_21"));
-        groupBox_21->setGeometry(QRect(250, 370, 251, 41));
+        groupBox_21->setGeometry(QRect(250, 410, 251, 41));
         btn_getFlash = new QPushButton(groupBox_21);
         btn_getFlash->setObjectName(QString::fromUtf8("btn_getFlash"));
         btn_getFlash->setGeometry(QRect(20, 16, 81, 23));
@@ -694,6 +700,24 @@ public:
         label_69 = new QLabel(groupBox_24);
         label_69->setObjectName(QString::fromUtf8("label_69"));
         label_69->setGeometry(QRect(10, 40, 31, 41));
+        groupBox_7 = new QGroupBox(tab);
+        groupBox_7->setObjectName(QString::fromUtf8("groupBox_7"));
+        groupBox_7->setGeometry(QRect(0, 0, 241, 71));
+        label_16 = new QLabel(groupBox_7);
+        label_16->setObjectName(QString::fromUtf8("label_16"));
+        label_16->setGeometry(QRect(10, 16, 41, 21));
+        label_18 = new QLabel(groupBox_7);
+        label_18->setObjectName(QString::fromUtf8("label_18"));
+        label_18->setGeometry(QRect(10, 40, 41, 21));
+        lineEdit_IP = new QLineEdit(groupBox_7);
+        lineEdit_IP->setObjectName(QString::fromUtf8("lineEdit_IP"));
+        lineEdit_IP->setGeometry(QRect(50, 16, 91, 20));
+        lineEdit_Port = new QLineEdit(groupBox_7);
+        lineEdit_Port->setObjectName(QString::fromUtf8("lineEdit_Port"));
+        lineEdit_Port->setGeometry(QRect(50, 41, 91, 20));
+        btn_config = new QPushButton(groupBox_7);
+        btn_config->setObjectName(QString::fromUtf8("btn_config"));
+        btn_config->setGeometry(QRect(150, 15, 61, 31));
         tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QString::fromUtf8("tab_2"));
@@ -984,6 +1008,12 @@ public:
         label_LinkStatus->setText(QString());
         label_69->setText(QApplication::translate("MainWindow", "\350\277\236\346\216\245\n"
 "\344\277\241\345\217\267", 0, QApplication::UnicodeUTF8));
+        groupBox_7->setTitle(QApplication::translate("MainWindow", "\351\200\232\344\277\241\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
+        label_16->setText(QApplication::translate("MainWindow", "IP\357\274\232", 0, QApplication::UnicodeUTF8));
+        label_18->setText(QApplication::translate("MainWindow", "\347\253\257\345\217\243\357\274\232", 0, QApplication::UnicodeUTF8));
+        lineEdit_IP->setText(QApplication::translate("MainWindow", "10.10.100.254", 0, QApplication::UnicodeUTF8));
+        lineEdit_Port->setText(QApplication::translate("MainWindow", "8899", 0, QApplication::UnicodeUTF8));
+        btn_config->setText(QApplication::translate("MainWindow", "\351\205\215\347\275\256\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "\345\237\272\346\234\254\350\257\267\346\261\202", 0, QApplication::UnicodeUTF8));
         groupBox_5->setTitle(QApplication::translate("MainWindow", "02 \347\263\273\347\273\237\344\277\241\346\201\257", 0, QApplication::UnicodeUTF8));
         btn_getSystem->setText(QApplication::translate("MainWindow", "\350\216\267\345\217\226\347\263\273\347\273\237\344\277\241\346\201\257", 0, QApplication::UnicodeUTF8));
