@@ -173,6 +173,7 @@ void MainWindow::on_btn_AddDevice_clicked()
     char SIGNAL_CHANNEL[3];
     char Equipment_Status[2];
     char Length[3];
+    int commtime;
     char cur_Time[15];
     char Version[100];
     bool flag = false;
@@ -191,7 +192,7 @@ void MainWindow::on_btn_AddDevice_clicked()
 
     memset(Recvbuff,0x00,200);
     sprintf(Sendbuff,"APS11002801%sEND",cur_Time);
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,28,Recvbuff,&recvLen,2000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,28,Recvbuff,&recvLen,2000,&commtime);
     if(flag == true)
     {
         memcpy(ECUID,&Recvbuff[11],12);
@@ -219,7 +220,7 @@ void MainWindow::on_btn_AddDevice_clicked()
         memcpy(Version,&Recvbuff[34],atoi(Length));
         Version[(atoi(Length))]  = '\0';
         ui->label_Version->setText(Version);
-        statusBar()->showMessage(tr("Add Device Success ..."), 2000);
+        statusBar()->showMessage(tr("Add Device Success ... time:%1 ms").arg(commtime), 2000);
     }else
     {
         statusBar()->showMessage(tr("Please verify WIFI Connect ..."), 2000);
@@ -230,6 +231,7 @@ void MainWindow::on_btn_SetChannel_clicked()
 {
     qint64 recvLen=0;
     bool flag = false;
+    int commtime = 0;
     char Sendbuff[50];
     char Recvbuff[200] = {'\0'};
     char SIGNAL_LEVEL[4];
@@ -239,12 +241,12 @@ void MainWindow::on_btn_SetChannel_clicked()
     setChannel[2] = '\0';
     sprintf(Sendbuff,"APS11003104%sEND%sEND\n",ECUID,setChannel);
     memset(Recvbuff,0x00,200);
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,31,Recvbuff,&recvLen,2000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,31,Recvbuff,&recvLen,2000,&commtime);
     if(flag == true)
     {
         if(Recvbuff[12] == '1')
         {//ECU ID²»Æ¥Åä
-            statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+            statusBar()->showMessage(tr("ECU ID Mismatching ... time:%1 ms").arg(commtime), 2000);
         }
         else
         {
@@ -255,7 +257,7 @@ void MainWindow::on_btn_SetChannel_clicked()
             memcpy(SIGNAL_LEVEL,&Recvbuff[15],3);
             SIGNAL_LEVEL[3]  = '\0';
             ui->label_Stren->setText(SIGNAL_LEVEL);
-            statusBar()->showMessage(tr("Set Channel Success ..."), 2000);
+            statusBar()->showMessage(tr("Set Channel Success ... time:%1 ms").arg(commtime), 2000);
         }
     }else
     {
@@ -268,6 +270,7 @@ void MainWindow::on_btn_setPasswd_clicked()
 {
     qint64 recvLen=0;
     bool flag = false;
+    int commtime = 0;
     char Sendbuff[300];
     char Recvbuff[200] = {'\0'};
     int OldLen = 0;
@@ -292,16 +295,16 @@ void MainWindow::on_btn_setPasswd_clicked()
     sprintf(length,"%04d",QString(Sendbuff).length());
     memcpy(&Sendbuff[5],length,4);
     memset(Recvbuff,0x00,200);
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,QString(Sendbuff).length(),Recvbuff,&recvLen,2000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,QString(Sendbuff).length(),Recvbuff,&recvLen,2000,&commtime);
     if(flag == true)
     {
         if(Recvbuff[12] == '1')
         {//ECU ID²»Æ¥Åä
-            statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+            statusBar()->showMessage(tr("ECU ID Mismatching ...  time:%1 ms").arg(commtime), 2000);
         }
         else
         {
-            statusBar()->showMessage(tr("Set Password Success ..."), 2000);
+            statusBar()->showMessage(tr("Set Password Success ...  time:%1 ms").arg(commtime), 2000);
         }
     }else
     {
@@ -313,6 +316,7 @@ void MainWindow::on_btn_SetID_clicked()
 {
     qint64 recvLen=0;
     bool flag = false;
+    int commtime = 0;
     char Sendbuff[8192];
     char Recvbuff[200] = {'\0'};
     char ID_BCD[7];
@@ -347,16 +351,16 @@ void MainWindow::on_btn_SetID_clicked()
 
     memset(Recvbuff,0x00,200);
 
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,(OPTCount*6+29),Recvbuff,&recvLen,3000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,(OPTCount*6+29),Recvbuff,&recvLen,3000,&commtime);
     if(flag == true)
     {
         if(Recvbuff[12] == '1')
         {//ECU ID²»Æ¥Åä
-            statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+            statusBar()->showMessage(tr("ECU ID Mismatching ... time:%1 ms").arg(commtime), 2000);
         }
         else
         {
-            statusBar()->showMessage(tr("Set ID Success ..."), 2000);
+            statusBar()->showMessage(tr("Set ID Success ... time:%1 ms").arg(commtime), 2000);
         }
     }else
     {
@@ -368,6 +372,7 @@ void MainWindow::on_btn_SetID_clicked()
 void MainWindow::on_btn_getSystem_clicked()
 {
     qint64 recvLen=0;
+    int commtime = 0;
     bool flag = false;
     char Sendbuff[200] = "APS11000002%sEND";
     char Recvbuff[8192] = {'\0'};
@@ -377,7 +382,7 @@ void MainWindow::on_btn_getSystem_clicked()
     memset(Recvbuff,0x00,200);
     sprintf(Sendbuff,"APS11002602%sEND",ECUID);
 
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,10000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,10000,&commtime);
     OPT700_RSList.clear();
     ui->comboBox_UID->clear();
     if(flag == true)
@@ -387,7 +392,7 @@ void MainWindow::on_btn_getSystem_clicked()
         {
             if(Recvbuff[12] == '1')
             {   //ECU ID²»Æ¥Åä
-                statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+                statusBar()->showMessage(tr("ECU ID Mismatching ... time:%1 ms").arg(commtime), 2000);
             }
             else
             {
@@ -397,7 +402,7 @@ void MainWindow::on_btn_getSystem_clicked()
                     //Çå¿ÕTableÖÐÄÚÈÝ
                     ui->tableWidget->clearContents();
 
-                    statusBar()->showMessage(tr("Don't Have OPT700-RS ..."), 2000);
+                    statusBar()->showMessage(tr("Don't Have OPT700-RS ... time:%1 ms").arg(commtime), 2000);
                     return;
                 }else
                 {
@@ -449,7 +454,7 @@ void MainWindow::on_btn_getSystem_clicked()
                         }
                     }
 
-                    statusBar()->showMessage(tr("Get System Info Success ..."), 2000);
+                    statusBar()->showMessage(tr("Get System Info Success ... time:%1 ms").arg(commtime), 2000);
                     ui->label_all->setText(QString::number(optcount));
                     ui->label_open->setText(QString::number(openCount));
                     ui->label_close->setText(QString::number(closeCount));
@@ -581,6 +586,7 @@ void MainWindow::addTableData(QTableWidget *table, QList<OPT700_RS *> &List)
 void MainWindow::on_btn_ECUImport_clicked()
 {
     qint64 recvLen=0;
+    int commtime = 0;
     bool flag = false;
     char Sendbuff[200] = "APS11000002%sEND";
     char Recvbuff[8192] = {'\0'};
@@ -591,7 +597,7 @@ void MainWindow::on_btn_ECUImport_clicked()
     sprintf(Sendbuff,"APS11002602%sEND",ECUID);
 
     ui->plainTextEdit_ID->clear();
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,10000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,10000,&commtime);
 
     if(flag == true)
     {
@@ -600,13 +606,13 @@ void MainWindow::on_btn_ECUImport_clicked()
         {
             if(Recvbuff[12] == '1')
             {   //ECU ID²»Æ¥Åä
-                statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+                statusBar()->showMessage(tr("ECU ID Mismatching ... time:%1 ms").arg(commtime), 2000);
             }
             else
             {
                 if(recvLen == 14)
                 {
-                    statusBar()->showMessage(tr("Don't Have OPT700-RS ..."), 2000);
+                    statusBar()->showMessage(tr("Don't Have OPT700-RS ... time:%1 ms").arg(commtime), 2000);
                     return;
                 }else
                 {
@@ -622,90 +628,10 @@ void MainWindow::on_btn_ECUImport_clicked()
                         ui->plainTextEdit_ID->appendPlainText(ID);
 
                     }
-                    statusBar()->showMessage(tr("Import ID Success ..."), 2000);
+                    statusBar()->showMessage(tr("Import ID Success ... time:%1 ms").arg(commtime), 2000);
                 }
             }
         }
-
-
-        if(!memcmp(&Recvbuff[9],"12",2))
-        {
-            if(Recvbuff[12] == '1')
-            {   //ECU ID²»Æ¥Åä
-                statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
-            }
-            else
-            {
-                if(recvLen == 14)
-                {
-                    statusBar()->showMessage(tr("Don't Have OPT700-RS ..."), 2000);
-                    return;
-                }else
-                {
-                    optcount = Recvbuff[13]*256 + Recvbuff[14];
-
-                    length = 15;
-                    for(index = 0;index < optcount;index++)
-                    {
-                        memset(ID,0x00,13);
-                        if(Recvbuff[length + 6] == 0)
-                        {
-                            sprintf(ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
-                            ID[12] = '\0';
-                            length += 13;
-                        }else if (Recvbuff[length + 6] == 1)
-                        {
-                            sprintf(ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
-                            ID[12] = '\0';
-                            length += 22;
-                        }
-                        ui->plainTextEdit_ID->appendPlainText(ID);
-                    }
-                    statusBar()->showMessage(tr("Import ID Success ..."), 2000);
-                }
-            }
-        }
-
-        //»Ø¸´µÄÊÇ22ÃüÁî
-        if(!memcmp(&Recvbuff[9],"22",2))
-        {
-            if(Recvbuff[12] == '1')
-            {   //ECU ID²»Æ¥Åä
-                statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
-            }
-            else
-            {
-                if(recvLen == 19)
-                {
-                    statusBar()->showMessage(tr("Don't Have OPT700-RS ..."), 2000);
-                    return;
-                }else
-                {
-                    optcount = Recvbuff[13]*256 + Recvbuff[14];
-                    length = 15;
-                    for(index = 0;index < optcount;index++)
-                    {
-                        if(Recvbuff[length + 6] == 0)
-                        {
-                            sprintf(ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
-                            ID[12] = '\0';
-                            length += 19;
-                        }else if (Recvbuff[length + 6] == 1)
-                        {
-                            sprintf(ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
-                            ID[12] = '\0';
-
-                            length += 31;
-                        }
-                        ui->plainTextEdit_ID->appendPlainText(ID);
-                    }
-
-
-                    statusBar()->showMessage(tr("Import ID Success ..."), 2000);
-                }
-            }
-        }
-
 
     }else
     {
@@ -717,6 +643,7 @@ void MainWindow::on_btn_setNetwork_clicked()
 {
     qint64 recvLen=0;
     bool flag = false;
+    int commtime = 0;
     unsigned char Sendbuff[200] = {'\0'};
     unsigned char Recvbuff[8192] = {'\0'};
     int select_item = 0;
@@ -757,16 +684,16 @@ void MainWindow::on_btn_setNetwork_clicked()
 
     }
 
-    flag = ECU_RSClient->ECU_Communication((char *)Sendbuff,53,(char *)Recvbuff,&recvLen,2000);
+    flag = ECU_RSClient->ECU_Communication((char *)Sendbuff,53,(char *)Recvbuff,&recvLen,2000,&commtime);
     if(flag == true)
     {
         if(!memcmp(&Recvbuff[11],"00",2))
         {
-            statusBar()->showMessage(tr("Set Network Success ..."), 1000);
+            statusBar()->showMessage(tr("Set Network Success ... time:%1 ms").arg(commtime), 1000);
         }
         else
         {
-            statusBar()->showMessage(tr("Set Network Failed ..."), 1000);
+            statusBar()->showMessage(tr("Set Network Failed ... time:%1 ms").arg(commtime), 1000);
         }
     }else
     {
@@ -778,6 +705,7 @@ void MainWindow::on_btn_setNetwork_clicked()
 void MainWindow::on_btn_getNetwork_clicked()
 {
     qint64 recvLen=0;
+    int commtime = 0;
     bool flag = false;
     unsigned char Sendbuff[200] = {'\0'};
     unsigned char Recvbuff[8192] = {'\0'};
@@ -787,7 +715,7 @@ void MainWindow::on_btn_getNetwork_clicked()
     sprintf((char *)Sendbuff,"APS11002610%sEND",ECUID);
 
 
-    flag = ECU_RSClient->ECU_Communication((char *)Sendbuff,26,(char *)Recvbuff,&recvLen,2000);
+    flag = ECU_RSClient->ECU_Communication((char *)Sendbuff,26,(char *)Recvbuff,&recvLen,2000,&commtime);
     if(flag == true)
     {
         if(!memcmp(&Recvbuff[11],"00",2))
@@ -831,11 +759,11 @@ void MainWindow::on_btn_getNetwork_clicked()
             MAC[17] = '\0';
             ui->label_mac->setText(MAC);
 
-            statusBar()->showMessage(tr("Get Network Success ..."), 1000);
+            statusBar()->showMessage(tr("Get Network Success ... time:%1 ms").arg(commtime), 1000);
         }
         else
         {
-            statusBar()->showMessage(tr("Get Network Failed ..."), 1000);
+            statusBar()->showMessage(tr("Get Network Failed ... time:%1 ms").arg(commtime), 1000);
         }
     }else
     {
@@ -847,22 +775,23 @@ void MainWindow::on_btn_getFlash_clicked()
 {
     qint64 recvLen=0;
     bool flag = false;
+    int commtime = 0;
     char Sendbuff[200] = {'\0'};
     char Recvbuff[8192] = {'\0'};
 
     memset(Recvbuff,0x00,8192);
     sprintf(Sendbuff,"APS11002611%sEND",ECUID);
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,2000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,2000,&commtime);
     if(flag == true)
     {
         if(Recvbuff[12] == '1')
         {   //ECU ID²»Æ¥Åä
-            statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+            statusBar()->showMessage(tr("ECU ID Mismatching ... time:%1 ms").arg(commtime), 2000);
         }
         else
         {
             unsigned int FlashSize = 0;
-            statusBar()->showMessage(tr("ECU Get Flash Size Success ..."), 2000);
+            statusBar()->showMessage(tr("ECU Get Flash Size Success ... time:%1 ms").arg(commtime), 2000);
 
             FlashSize = (Recvbuff[13]&0x000000ff)*16777216+(Recvbuff[14]&0x000000ff)*65536+(Recvbuff[15]&0x000000ff)*256+(Recvbuff[16]&0x000000ff);
             ui->lineEdit_flashsize->setText(QString::number(FlashSize));
@@ -1079,6 +1008,7 @@ void MainWindow::on_btn_setFunction_clicked()
 {
     qint64 recvLen=0;
     bool flag = false;
+    int commtime = 0;
     unsigned char Sendbuff[200] = {'\0'};
     unsigned char Recvbuff[8192] = {'\0'};
     int select_item = 0;
@@ -1094,16 +1024,16 @@ void MainWindow::on_btn_setFunction_clicked()
         sprintf((char *)Sendbuff,"APS11002706%s1END",ECUID);
     }
 
-    flag = ECU_RSClient->ECU_Communication((char *)Sendbuff,27,(char *)Recvbuff,&recvLen,2000);
+    flag = ECU_RSClient->ECU_Communication((char *)Sendbuff,27,(char *)Recvbuff,&recvLen,2000,&commtime);
     if(flag == true)
     {
         if(!memcmp(&Recvbuff[11],"00",2))
         {
-            statusBar()->showMessage(tr("Set RSD Function Success ..."), 1000);
+            statusBar()->showMessage(tr("Set RSD Function Success ... time:%1 ms").arg(commtime), 1000);
         }
         else
         {
-            statusBar()->showMessage(tr("Set RSD Function Failed ..."), 1000);
+            statusBar()->showMessage(tr("Set RSD Function Failed ... time:%1 ms").arg(commtime), 1000);
         }
     }else
     {
@@ -1183,6 +1113,7 @@ void MainWindow::on_btn_getPower_clicked()
 {
     qint64 recvLen=0;
     bool flag = false;
+    int commtime = 0;
     char Sendbuff[200] = {'\0'};
     char Recvbuff[8192] = {'\0'};
     int length = 0,index = 0;
@@ -1193,7 +1124,7 @@ void MainWindow::on_btn_getPower_clicked()
     memset(Recvbuff,0x00,8192);
     sprintf(Sendbuff,"APS11003712%sEND%02d%02d%02dEND",ECUID,year,month,day);
 
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,37,Recvbuff,&recvLen,5000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,37,Recvbuff,&recvLen,5000,&commtime);
     PowerData_List.clear();
 
     if(flag == true)
@@ -1203,15 +1134,15 @@ void MainWindow::on_btn_getPower_clicked()
         ui->tableWidget_Power->clearContents();
         if(Recvbuff[12] == '1')
         {   //ECU ID²»Æ¥Åä
-            statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+            statusBar()->showMessage(tr("ECU ID Mismatching ... time:%1 ms").arg(commtime), 2000);
         }else if(Recvbuff[12] == '2')
         {
-            statusBar()->showMessage(tr("ECU Have no Power Data ..."), 2000);
+            statusBar()->showMessage(tr("ECU Have no Power Data ... time:%1 ms").arg(commtime), 2000);
         }
 
         else
         {
-            statusBar()->showMessage(tr("ECU Get Power Data Success ..."), 2000);
+            statusBar()->showMessage(tr("ECU Get Power Data Success ... time:%1 ms").arg(commtime), 2000);
             num = (recvLen-24)/4;
             length = 21;
             for(index = 0;index < num;index++)
@@ -1248,6 +1179,7 @@ void MainWindow::on_btn_getEnergy_clicked()
 {
     qint64 recvLen=0;
     bool flag = false;
+    int commtime = 0;
     char Sendbuff[200] = {'\0'};
     char Recvbuff[8192] = {'\0'};
     int length = 0,index = 0;
@@ -1261,7 +1193,7 @@ void MainWindow::on_btn_getEnergy_clicked()
     sprintf(Sendbuff,"APS11003908%sEND%02d%02d%02d%02dEND",ECUID,year,month,day,select_item);
     qDebug("send:%s\n",Sendbuff);
 
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,39,Recvbuff,&recvLen,5000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,39,Recvbuff,&recvLen,5000,&commtime);
     EnergyData_List.clear();
 
     if(flag == true)
@@ -1271,14 +1203,14 @@ void MainWindow::on_btn_getEnergy_clicked()
         ui->tableWidget_Energy->clearContents();
         if(Recvbuff[12] == '1')
         {   //ECU ID²»Æ¥Åä
-            statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+            statusBar()->showMessage(tr("ECU ID Mismatching ... time:%1 ms").arg(commtime), 2000);
         }else if(Recvbuff[12] == '2')
         {
-            statusBar()->showMessage(tr("ECU Don't Have Energy Data ..."), 2000);
+            statusBar()->showMessage(tr("ECU Don't Have Energy Data ... time:%1 ms").arg(commtime), 2000);
         }
         else
         {
-            statusBar()->showMessage(tr("ECU Get Energy Data Success ..."), 2000);
+            statusBar()->showMessage(tr("ECU Get Energy Data Success ... time:%1 ms").arg(commtime), 2000);
             num = (recvLen-26)/6;
             length = 23;
             for(index = 0;index < num;index++)
@@ -1372,6 +1304,7 @@ void MainWindow::on_btn_getInfo_clicked()
     char uid_str[13] = {'\0'};
     char uid[7] = {'\0'};
     bool flag = false;
+    int commtime = 0;
     char Sendbuff[200] = {'\0'};
     char Recvbuff[8192] = {'\0'};
     int optcount = 0;
@@ -1391,7 +1324,7 @@ void MainWindow::on_btn_getInfo_clicked()
     uid[5] = (uid_str[10] - '0')*0x10 + (uid_str[11] - '0');
     memcpy(&Sendbuff[34],uid,6);
 
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,43,Recvbuff,&recvLen,15000);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,43,Recvbuff,&recvLen,15000,&commtime);
     OPT700_RS_INFOList.clear();
 
     if(flag == true)
@@ -1401,10 +1334,10 @@ void MainWindow::on_btn_getInfo_clicked()
         {
             if(Recvbuff[12] == '1')
             {   //ECU ID²»Æ¥Åä
-                statusBar()->showMessage(tr("ECU ID Mismatching ..."), 2000);
+                statusBar()->showMessage(tr("ECU ID Mismatching ... time:%1 ms").arg(commtime), 2000);
             }else if(Recvbuff[12] == '2')
             {
-                statusBar()->showMessage(tr("ECU Don't Have Data ..."), 2000);
+                statusBar()->showMessage(tr("ECU Don't Have Data ... time:%1 ms").arg(commtime), 2000);
             }
             else
             {
@@ -1428,7 +1361,7 @@ void MainWindow::on_btn_getInfo_clicked()
 
                 }
 
-                statusBar()->showMessage(tr("Get RSD Info Success ..."), 2000);
+                statusBar()->showMessage(tr("Get RSD Info Success ... time:%1 ms").arg(commtime), 2000);
 
                 addINFOTableData(ui->tableWidget_Info,OPT700_RS_INFOList);
                 QList<OPT700_RS_INFO *>::Iterator iter = OPT700_RS_INFOList.begin();

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Thu Sep 28 16:13:45 2017
+** Created: Fri Sep 29 14:47:11 2017
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -425,7 +425,7 @@ public:
         btn_setNetwork->setGeometry(QRect(126, 15, 51, 23));
         gridLayoutWidget_5 = new QWidget(groupBox_26);
         gridLayoutWidget_5->setObjectName(QString::fromUtf8("gridLayoutWidget_5"));
-        gridLayoutWidget_5->setGeometry(QRect(10, 60, 254, 126));
+        gridLayoutWidget_5->setGeometry(QRect(10, 60, 231, 111));
         gridLayout_5 = new QGridLayout(gridLayoutWidget_5);
         gridLayout_5->setSpacing(6);
         gridLayout_5->setContentsMargins(11, 11, 11, 11);

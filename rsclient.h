@@ -13,7 +13,7 @@ public:
     ~RSClient();
 
 
-    bool ECU_Communication(char *Sendbuff,qint64 sendLen, char *Recvbuff,qint64 *recvLen,int timeout);
+    bool ECU_Communication(char *Sendbuff,qint64 sendLen, char *Recvbuff,qint64 *recvLen,int timeout,int *commtime);
 
 
     QString IP;
