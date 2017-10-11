@@ -429,18 +429,18 @@ void MainWindow::on_btn_getSystem_clicked()
 
                         opt700_rs->Heart_Rate = (Recvbuff[length+8] & 0x000000ff)*256+(Recvbuff[length+9] & 0x000000ff);
                         opt700_rs->Off_Times = (Recvbuff[length+10] & 0x000000ff)*256+(Recvbuff[length+11] & 0x000000ff);
-                        opt700_rs->Shutdown_Num = Recvbuff[length+12];
-                        opt700_rs->PV1 = Recvbuff[length+13]*256+Recvbuff[length+14];
-                        opt700_rs->PV2 = Recvbuff[length+15]*256+Recvbuff[length+16];
-                        opt700_rs->PI = Recvbuff[length+17];
-                        opt700_rs->Power1 = Recvbuff[length+18]*256+Recvbuff[length+19];
-                        opt700_rs->Power2 = Recvbuff[length+20]*256+Recvbuff[length+21];
-                        opt700_rs->Output_PV = Recvbuff[length+22]*256+Recvbuff[length+23];
-                        opt700_rs->RSSI = Recvbuff[length+24];
+                        opt700_rs->Shutdown_Num = (Recvbuff[length+12] & 0x000000ff);
+                        opt700_rs->PV1 = (Recvbuff[length+13] & 0x000000ff)*256+(Recvbuff[length+14] & 0x000000ff);
+                        opt700_rs->PV2 = (Recvbuff[length+15] & 0x000000ff)*256+(Recvbuff[length+16] & 0x000000ff);
+                        opt700_rs->PI = (Recvbuff[length+17] & 0x000000ff);
+                        opt700_rs->Power1 = (Recvbuff[length+18] & 0x000000ff)*256+(Recvbuff[length+19] & 0x000000ff);
+                        opt700_rs->Power2 = (Recvbuff[length+20] & 0x000000ff)*256+(Recvbuff[length+21] & 0x000000ff);
+                        opt700_rs->Output_PV = (Recvbuff[length+22] & 0x000000ff)*256+(Recvbuff[length+23] & 0x000000ff);
+                        opt700_rs->RSSI = (Recvbuff[length+24]  & 0x000000ff);
 
                         opt700_rs->PV1_ENERGY =  (Recvbuff[length+25] & 0x000000ff)*256+(Recvbuff[length+26] & 0x000000ff) + (Recvbuff[length+27] & 0x000000ff)*256+(Recvbuff[length+28] & 0x000000ff);
                         opt700_rs->PV2_ENERGY = (Recvbuff[length+29] & 0x000000ff)*256+(Recvbuff[length+30] & 0x000000ff) + (Recvbuff[length+31] & 0x000000ff)*256+(Recvbuff[length+32] & 0x000000ff);
-                        opt700_rs->MOS_CLOSE_NUM = Recvbuff[length+33];
+                        opt700_rs->MOS_CLOSE_NUM = (Recvbuff[length+33] & 0x000000ff);
                         OPT700_RSList.push_back(opt700_rs);
 
                         length += 56;
