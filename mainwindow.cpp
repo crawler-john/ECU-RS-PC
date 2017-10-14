@@ -236,12 +236,18 @@ void MainWindow::on_btn_SetChannel_clicked()
     char Recvbuff[200] = {'\0'};
     char SIGNAL_LEVEL[4];
     char SIGNAL_CHANNEL[3];
+    char oldChannel[3];
     char setChannel[3];
+    memcpy(oldChannel,ui->comboBox_OldChannel->currentText().toLatin1().data(),2);
+    oldChannel[2] = '\0';
     memcpy(setChannel,ui->comboBox_SetChannel->currentText().toLatin1().data(),2);
     setChannel[2] = '\0';
-    sprintf(Sendbuff,"APS11003104%sEND%sEND\n",ECUID,setChannel);
+
+    qDebug("%s  %s\n",oldChannel,setChannel);
+    sprintf(Sendbuff,"APS11003304%sEND%s%sEND\n",ECUID,oldChannel,setChannel);
+    qDebug("%s\n",Sendbuff);
     memset(Recvbuff,0x00,200);
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,31,Recvbuff,&recvLen,2000,&commtime);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,33,Recvbuff,&recvLen,2000,&commtime);
     if(flag == true)
     {
         if(Recvbuff[12] == '1')
@@ -382,7 +388,7 @@ void MainWindow::on_btn_getSystem_clicked()
     memset(Recvbuff,0x00,200);
     sprintf(Sendbuff,"APS11002602%sEND",ECUID);
 
-    flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,10000,&commtime);
+    flag = ECU_RSClient->ECU_Communication(Sendbuff,26,Recvbuff,&recvLen,5000,&commtime);
     OPT700_RSList.clear();
     ui->comboBox_UID->clear();
     if(flag == true)
@@ -432,18 +438,27 @@ void MainWindow::on_btn_getSystem_clicked()
                         opt700_rs->Shutdown_Num = (Recvbuff[length+12] & 0x000000ff);
                         opt700_rs->PV1 = (Recvbuff[length+13] & 0x000000ff)*256+(Recvbuff[length+14] & 0x000000ff);
                         opt700_rs->PV2 = (Recvbuff[length+15] & 0x000000ff)*256+(Recvbuff[length+16] & 0x000000ff);
-                        opt700_rs->PI = (Recvbuff[length+17] & 0x000000ff);
-                        opt700_rs->Power1 = (Recvbuff[length+18] & 0x000000ff)*256+(Recvbuff[length+19] & 0x000000ff);
-                        opt700_rs->Power2 = (Recvbuff[length+20] & 0x000000ff)*256+(Recvbuff[length+21] & 0x000000ff);
-                        opt700_rs->Output_PV = (Recvbuff[length+22] & 0x000000ff)*256+(Recvbuff[length+23] & 0x000000ff);
-                        opt700_rs->RSSI = (Recvbuff[length+24]  & 0x000000ff);
+                        opt700_rs->PI = (Recvbuff[length+17] & 0x000000ff)*256 +  (Recvbuff[length+18] & 0x000000ff);
+                        opt700_rs->PI2 = (Recvbuff[length+19] & 0x000000ff)*256 +  (Recvbuff[length+20] & 0x000000ff);
 
-                        opt700_rs->PV1_ENERGY =  (Recvbuff[length+25] & 0x000000ff)*256+(Recvbuff[length+26] & 0x000000ff) + (Recvbuff[length+27] & 0x000000ff)*256+(Recvbuff[length+28] & 0x000000ff);
-                        opt700_rs->PV2_ENERGY = (Recvbuff[length+29] & 0x000000ff)*256+(Recvbuff[length+30] & 0x000000ff) + (Recvbuff[length+31] & 0x000000ff)*256+(Recvbuff[length+32] & 0x000000ff);
-                        opt700_rs->MOS_CLOSE_NUM = (Recvbuff[length+33] & 0x000000ff);
+                        opt700_rs->Power1 = (Recvbuff[length+21] & 0x000000ff)*256+(Recvbuff[length+22] & 0x000000ff);
+                        opt700_rs->Power2 = (Recvbuff[length+23] & 0x000000ff)*256+(Recvbuff[length+24] & 0x000000ff);
+                        opt700_rs->Output_PV = (Recvbuff[length+25] & 0x000000ff)*256+(Recvbuff[length+26] & 0x000000ff);
+                        opt700_rs->PI_Output = (Recvbuff[length+27] & 0x000000ff)*256+(Recvbuff[length+28] & 0x000000ff);
+                        opt700_rs->Power_Output = (Recvbuff[length+29] & 0x000000ff)*256+(Recvbuff[length+30] & 0x000000ff);
+
+
+                        opt700_rs->RSSI = (Recvbuff[length+31]  & 0x000000ff);
+
+                        opt700_rs->PV1_ENERGY =  (Recvbuff[length+32] & 0x000000ff)*256*256*256+(Recvbuff[length+33] & 0x000000ff)*256*256 + (Recvbuff[length+34] & 0x000000ff)*256+(Recvbuff[length+35] & 0x000000ff);
+                        opt700_rs->PV2_ENERGY = (Recvbuff[length+36] & 0x000000ff)*256*256*256+(Recvbuff[length+37] & 0x000000ff)*256*256 + (Recvbuff[length+38] & 0x000000ff)*256+(Recvbuff[length+39] & 0x000000ff);
+                        opt700_rs->PV_Output_ENERGY = (Recvbuff[length+40] & 0x000000ff)*256*256*256+(Recvbuff[length+41] & 0x000000ff)*256*256 + (Recvbuff[length+42] & 0x000000ff)*256+(Recvbuff[length+43] & 0x000000ff);
+
+                        opt700_rs->MOS_CLOSE_NUM = (Recvbuff[length+44] & 0x000000ff);
+                        opt700_rs->version = (Recvbuff[length+45] & 0x000000ff)*256+(Recvbuff[length+46] & 0x000000ff);
                         OPT700_RSList.push_back(opt700_rs);
 
-                        length += 56;
+                        length += 57;
 
                         if(opt700_rs->Mos_Status == 1)
                         {
@@ -507,6 +522,11 @@ void MainWindow::addTableData(QTableWidget *table, QList<OPT700_RS *> &List)
         QTableWidgetItem *item16 = new QTableWidgetItem();
         QTableWidgetItem *item17 = new QTableWidgetItem();
         QTableWidgetItem *item18 = new QTableWidgetItem();
+        QTableWidgetItem *item19 = new QTableWidgetItem();
+        QTableWidgetItem *item20 = new QTableWidgetItem();
+        QTableWidgetItem *item21 = new QTableWidgetItem();
+        QTableWidgetItem *item22 = new QTableWidgetItem();
+        QTableWidgetItem *item23 = new QTableWidgetItem();
 
 
 
@@ -523,15 +543,20 @@ void MainWindow::addTableData(QTableWidget *table, QList<OPT700_RS *> &List)
         item9->setText(QString::number((*iter)->PV1));
         item10->setText(QString::number((*iter)->PV2));
         item11->setText(QString::number((*iter)->PI));
-        item12->setText(QString::number((*iter)->Power1));
-        item13->setText(QString::number((*iter)->Power2));
-        item14->setText(QString::number((*iter)->Output_PV));
-        item15->setText(QString::number((*iter)->RSSI));
+        item12->setText(QString::number((*iter)->PI2));
 
-        item16->setText(QString::number((*iter)->PV1_ENERGY));
-        item17->setText(QString::number((*iter)->PV2_ENERGY));
-        item18->setText(QString::number((*iter)->MOS_CLOSE_NUM));
+        item13->setText(QString::number((*iter)->Power1));
+        item14->setText(QString::number((*iter)->Power2));
+        item15->setText(QString::number((*iter)->Output_PV));
+        item16->setText(QString::number((*iter)->PI_Output));
+        item17->setText(QString::number((*iter)->Power_Output));
+        item18->setText(QString::number((*iter)->RSSI));
 
+        item19->setText(QString::number((*iter)->PV1_ENERGY));
+        item20->setText(QString::number((*iter)->PV2_ENERGY));
+        item21->setText(QString::number((*iter)->PV_Output_ENERGY));
+        item22->setText(QString::number((*iter)->MOS_CLOSE_NUM));
+        item23->setText(QString::number((*iter)->version));
 
 
         if((*iter)->Mos_Status == 1)
@@ -555,6 +580,11 @@ void MainWindow::addTableData(QTableWidget *table, QList<OPT700_RS *> &List)
             item16->setBackgroundColor(QColor(0,238,0));
             item17->setBackgroundColor(QColor(0,238,0));
             item18->setBackgroundColor(QColor(0,238,0));
+            item19->setBackgroundColor(QColor(0,238,0));
+            item20->setBackgroundColor(QColor(0,238,0));
+            item21->setBackgroundColor(QColor(0,238,0));
+            item22->setBackgroundColor(QColor(0,238,0));
+            item23->setBackgroundColor(QColor(0,238,0));
         }
 
         table->setItem(row_count, 0, item);
@@ -576,6 +606,11 @@ void MainWindow::addTableData(QTableWidget *table, QList<OPT700_RS *> &List)
         table->setItem(row_count, 16, item16);
         table->setItem(row_count, 17, item17);
         table->setItem(row_count, 18, item18);
+        table->setItem(row_count, 19, item19);
+        table->setItem(row_count, 20, item20);
+        table->setItem(row_count, 21, item21);
+        table->setItem(row_count, 22, item22);
+        table->setItem(row_count, 23, item23);
     }
 }
 
@@ -624,7 +659,7 @@ void MainWindow::on_btn_ECUImport_clicked()
                         memset(ID,0x00,13);
                         sprintf(ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
                         ID[12] = '\0';
-                        length += 56;
+                        length += 57;
                         ui->plainTextEdit_ID->appendPlainText(ID);
 
                     }

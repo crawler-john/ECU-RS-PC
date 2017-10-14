@@ -18,14 +18,19 @@ typedef struct
     unsigned char Shutdown_Num;
     unsigned short PV1;
     unsigned short PV2;
-    unsigned char PI;
+    unsigned short PI;
+    unsigned short PI2;
     unsigned short Power1;
     unsigned short Power2;
     unsigned short Output_PV;
+    unsigned short PI_Output;
+    unsigned short Power_Output;
     unsigned char RSSI;
     unsigned int PV1_ENERGY;    //10 -6次方度
     unsigned int PV2_ENERGY;    //10 -6次方度
+    unsigned int PV_Output_ENERGY;    //10 -6次方度
     unsigned char MOS_CLOSE_NUM;
+    unsigned short version;
 
 } OPT700_RS;
 
