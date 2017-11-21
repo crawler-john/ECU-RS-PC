@@ -458,7 +458,7 @@ void MainWindow::on_btn_getSystem_clicked()
                         opt700_rs->version = (Recvbuff[length+45] & 0x000000ff)*256+(Recvbuff[length+46] & 0x000000ff);
                         OPT700_RSList.push_back(opt700_rs);
 
-                        length += 57;
+                        length += 56;
 
                         if(opt700_rs->Mos_Status == 1)
                         {
@@ -659,7 +659,7 @@ void MainWindow::on_btn_ECUImport_clicked()
                         memset(ID,0x00,13);
                         sprintf(ID,"%02x%02x%02x%02x%02x%02x",(Recvbuff[length] & 0xff),(Recvbuff[length+1] & 0xff),(Recvbuff[length+2] & 0xff),(Recvbuff[length+3] & 0xff),(Recvbuff[length+4] & 0xff),(Recvbuff[length+5] & 0xff));
                         ID[12] = '\0';
-                        length += 57;
+                        length += 56;
                         ui->plainTextEdit_ID->appendPlainText(ID);
 
                     }
